@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "./AuthService";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { BiShow, BiHide } from "react-icons/bi";
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -14,7 +17,7 @@ const Login = () => {
     if (result.success) {
       navigate("/inicio");
     } else {
-      setMessage(result.message);
+      toast.error(result.message);
     }
   };
 
@@ -24,6 +27,7 @@ const Login = () => {
         <div className="col-md-4">
           <div className="card shadow-lg p-4">
             <h2 className="text-center mb-4">Iniciar Sesión</h2>
+            
             <input
               type="text"
               className="form-control mb-3"
@@ -31,20 +35,38 @@ const Login = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-            <input
-              type="password"
-              className="form-control mb-3"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+
+            <div className="input-group mb-3">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="form-control"
+                placeholder="Contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <BiHide size={20} /> : <BiShow size={20} />}
+              </button>
+            </div>
+
             <button className="btn btn-primary w-100" onClick={handleLogin}>
               Iniciar Sesión
             </button>
-            {message && <p className="text-danger text-center mt-3">{message}</p>}
+
+            <div style={{ marginTop: '30px', textAlign: 'center' }}>
+              <a href="/registro" style={{ display: 'block', marginBottom: '10px', color: '#007bff', textDecoration: 'none' }}>
+                ¿No tienes una cuenta? Regístrate aquí
+              </a>
+            </div>
           </div>
         </div>
       </div>
+
+      <ToastContainer />
     </div>
   );
 };

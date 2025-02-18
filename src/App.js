@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import { isAuthenticated } from "./AuthService";
 import Login from "./login";
 import Inicio from "./Inicio";
+import Registro from "./register";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const PrivateRoute = ({ children }) => {
@@ -19,6 +20,7 @@ const App = () => {
       </nav>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
         <Route path="/inicio" element={<PrivateRoute><Inicio /></PrivateRoute>} />
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
